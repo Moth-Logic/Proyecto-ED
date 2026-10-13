@@ -19,4 +19,30 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Carta.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EstadoSpider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JuegoSpider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lista.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mazo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pila.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PilaCartaSpider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
