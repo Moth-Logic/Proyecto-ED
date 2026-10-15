@@ -20,23 +20,27 @@ int main() {
     continuar = true;
     while (continuar) {
 
-        cout << "Qué quieres hacer?" << endl << "[1].Mover" << endl << "[2].Deshacer" << endl;
+        cout << "Qué quieres hacer?" << endl << "[1].Mover" << endl << "[2].Deshacer" << endl << "[3].Abandonar" << endl;
         string opcion;
-        cout << "Seleccione una opción entre 1 y 2: ";
+        cout << "Seleccione una opción entre 1, 2 y 3: ";
         getline(cin, opcion);
 
-        while (opcion != "1" && opcion != "2") {
+        while (opcion != "1" && opcion != "2" && opcion != "3") {
             cout << "Opción inválida. Intente nuevamente." << endl;
-            cout << "Seleccione una opción entre 1 y 2: ";
+            cout << "Seleccione una opción entre 1, 2 y 3: ";
             getline(cin, opcion);
         }
         cout << endl;
         if (opcion == "1") {
-            cout << "holiwi";
+            cout << "holiwi" << endl;
         }
         else if (opcion == "2") {
-            cout << "holiwi X2";
+            cout << "holiwi X2" << endl;
         }
+        else if (opcion == "3") {
+            juego.abandonar();
+        }
+
     }
 
 	return 0;
