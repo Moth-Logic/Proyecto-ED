@@ -190,13 +190,19 @@ public:
 
 	bool juegoGanado() { return escalerasCompletadas >= 8; }
 
-	// Tablero como texto. Une las 10 columnas lado a lado con ancho fijo (4).
+	// Tablero como texto. Cada columna usa 6 caracteres y 5 espacios de separación.
 	string mostrarEstado() {
+		const int anchoColumna = 6;
+		const string separacion = "     ";
 		string texto = "Mazo: " + to_string(mazo.tamano()) + " cartas, repartos: "
 			+ to_string(mazo.cantidadReparticiones()) + ", escaleras: "
 			+ to_string(escalerasCompletadas) + "/8\n";
-		for (int i = 1; i <= 10; i++)
-			texto += "| " + to_string(i) + " ";
+		for (int i = 1; i <= 10; i++) {
+			string encabezado = to_string(i);
+			while (encabezado.size() < anchoColumna)
+				encabezado += " ";
+			texto += encabezado + separacion;
+		}
 		string filas[10];
 		int altura = 0;
 		for (int i = 0; i < 10; i++) {
@@ -208,9 +214,9 @@ public:
 			texto += "\n";
 			for (int i = 0; i < 10; i++) {
 				string linea = extraerLinea(filas[i], l);
-				while (linea.size() < 4)
+				while (linea.size() < anchoColumna)
 					linea += " ";
-				texto += linea;
+				texto += linea + separacion;
 			}
 		}
 		return texto;

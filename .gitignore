@@ -1,0 +1,63 @@
+# ==========================================================
+# Ruby Solitaire - archivos ignorados por Git
+# ==========================================================
+
+# --- Visual Studio: estado del IDE y archivos de usuario ---
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.VC.opendb
+*.VC.db
+*.psess
+*.vsp
+*.vspx
+ipch/
+*.ipch
+*.vsidx
+*.wsuo
+*.sqlite
+*.opendb
+
+# --- Salidas de compilación (MSVC) ---
+# Carpetas generadas por la compilación
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Bb]uild/
+.vsbuild/
+
+# Binarios, objetos y símbolos
+*.exe
+*.exe.recipe
+*.obj
+*.o
+*.a
+*.lib
+*.dll
+*.exp
+*.ilk
+*.idb
+*.pdb
+*.iobj
+*.ipdb
+*.tlog
+*.cache
+*.lastbuildstate
+*.recipe
+*.pgc
+*.pgd
+
+# --- Registros y temporales ---
+*.log
+*.tmp
+*.temp
+*~
+Thumbs.db
+Desktop.ini

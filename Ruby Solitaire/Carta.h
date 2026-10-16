@@ -21,7 +21,7 @@ public:
 	void voltear() { bocaArriba = !bocaArriba; }
 
 	std::string toString() const {
-		static const char* letras[] = { "", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+		static const char* letras[] = { " ", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
 		return std::string(valor >= 1 && valor <= 13 ? letras[valor] : "?") + '-' + palo;
 	}
 };
