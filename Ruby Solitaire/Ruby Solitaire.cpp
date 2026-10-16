@@ -176,7 +176,7 @@ int main() {
             actualizarPantalla(juego, false);
         }
         else if (opcion == "2") {
-            cout << "holiwi X2" << endl;
+            cout << "Holiwiii mrweep!!! UwU" << endl;
         }
         continuar = repetir();
     }

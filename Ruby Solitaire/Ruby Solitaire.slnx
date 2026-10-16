@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Ruby Solitaire.vcxproj" />
+  <Project Path="Ruby Solitaire.vcxproj" Id="8a8b1691-05ad-4676-953e-19851a569144" />
 </Solution>
