@@ -9,6 +9,9 @@
 #include "PilaCartaSpider.h"
 #include "EstadoSpider.h"
 
+using std::string;
+using std::to_string;
+
 // Controlador del Solitario Spider.
 // mover() y repartir() usan columnas 1..10; getColumna(i) usa 0..9.
 // Reglas: 104 cartas en 10 columnas (4 de 6 y 6 de 5, solo el tope boca
@@ -24,7 +27,7 @@ private:
 	Pila<EstadoSpider*> historialDeshacer;
 	Pila<EstadoSpider*> historialRehacer;
 	bool partidaTerminada;
-	std::string ultimoError;
+	string ultimoError;
 
 	void limpiarRehacer() {
 		while (!historialRehacer.isEmpty())
@@ -72,12 +75,11 @@ private:
 
 	bool movimientoValido(int origen, int destino, int cantidad) {
 		if (partidaTerminada) {
-			ultimoError = "La partida esta terminada.";
+			ultimoError = "La partida está terminada.";
 			return false;
 		}
-		if (origen < 1 || origen > 10 || destino < 1 || destino > 10 || origen == destino
-			|| cantidad < 1 || cantidad > columnas[origen - 1].tamano()) {
-			ultimoError = "Columna o cantidad invalida.";
+		else if (origen == destino) {
+			ultimoError = "La columna de origen y destino no puede ser la misma.";
 			return false;
 		}
 		PilaCartaSpider& colA = columnas[origen - 1];
@@ -189,13 +191,13 @@ public:
 	bool juegoGanado() { return escalerasCompletadas >= 8; }
 
 	// Tablero como texto. Une las 10 columnas lado a lado con ancho fijo (4).
-	std::string mostrarEstado() {
-		std::string texto = "Mazo: " + std::to_string(mazo.tamano()) + " cartas, repartos: "
-			+ std::to_string(mazo.cantidadReparticiones()) + ", escaleras: "
-			+ std::to_string(escalerasCompletadas) + "/8\n";
+	string mostrarEstado() {
+		string texto = "Mazo: " + to_string(mazo.tamano()) + " cartas, repartos: "
+			+ to_string(mazo.cantidadReparticiones()) + ", escaleras: "
+			+ to_string(escalerasCompletadas) + "/8\n";
 		for (int i = 1; i <= 10; i++)
-			texto += "| " + std::to_string(i) + " ";
-		std::string filas[10];
+			texto += "| " + to_string(i) + " ";
+		string filas[10];
 		int altura = 0;
 		for (int i = 0; i < 10; i++) {
 			filas[i] = columnas[i].mostrar();
@@ -205,7 +207,7 @@ public:
 		for (int l = 0; l < altura; l++) {
 			texto += "\n";
 			for (int i = 0; i < 10; i++) {
-				std::string linea = extraerLinea(filas[i], l);
+				string linea = extraerLinea(filas[i], l);
 				while (linea.size() < 4)
 					linea += " ";
 				texto += linea;
@@ -214,24 +216,48 @@ public:
 		return texto;
 	}
 
+	bool origenValido(int origen) {
+		if (origen < 1 || origen > 10) {
+			ultimoError = "Columna de origen inválida.";
+			return false;
+		}
+		return true;
+	}
+
+	bool destinoValido(int origen, int destino) {
+		if (destino < 1 || destino > 10) {
+			ultimoError = "Columna de destino inválida.";
+			return false;
+		}
+		return true;
+	}
+
+	bool cantidadValida(int origen, int cantidad) {
+		if (cantidad < 1 || cantidad > columnas[origen - 1].tamano()) {
+			ultimoError = "Cantidad inválida.";
+			return false;
+		}
+		return true;
+	}
+
 	int getEscalerasCompletadas() { return escalerasCompletadas; }
 	int getReparticionesRestantes() { return mazo.cantidadReparticiones(); }
 	int getCartasMazo() { return mazo.tamano(); }
 	bool estaPartidaTerminada() { return partidaTerminada; }
 	PilaCartaSpider& getColumna(int indice) { return columnas[indice]; }
-	std::string getUltimoError() { return ultimoError; }
+	string getUltimoError() { return ultimoError; }
 
 	// Línea 'n' (0-based) de un texto con '\n'; espacios si no existe.
-	static std::string extraerLinea(const std::string& texto, int linea) {
+	static string extraerLinea(const string& texto, int linea) {
 		size_t pos = 0;
 		for (int i = 0; i < linea; i++) {
 			pos = texto.find('\n', pos);
-			if (pos == std::string::npos)
+			if (pos == string::npos)
 				return "";
 			pos++;
 		}
 		size_t fin = texto.find('\n', pos);
-		return texto.substr(pos, fin == std::string::npos ? std::string::npos : fin - pos);
+		return texto.substr(pos, fin == string::npos ? string::npos : fin - pos);
 	}
 };
 
