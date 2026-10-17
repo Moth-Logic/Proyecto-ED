@@ -3,6 +3,8 @@
 
 #include <string>
 
+using std::string;
+
 // Carta del mazo. Palo: 'C' corazones, 'D' diamantes, 'T' tréboles, 'E' espadas.
 class Carta {
 private:
@@ -20,9 +22,9 @@ public:
 	bool estaBocaArriba() const { return bocaArriba; }
 	void voltear() { bocaArriba = !bocaArriba; }
 
-	std::string toString() const {
+	string toString() const {
 		static const char* letras[] = { " ", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
-		return std::string(valor >= 1 && valor <= 13 ? letras[valor] : "?") + '-' + palo;
+		return string(valor >= 1 && valor <= 13 ? letras[valor] : "?") + '-' + palo;
 	}
 };
 
