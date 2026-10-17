@@ -4,6 +4,8 @@
 #include "Carta.h"
 #include "Lista.h"
 
+using std::string;
+
 // Una columna de la mesa (hay 10). [0] = base de la columna, último = tope.
 class PilaCartaSpider {
 private:
@@ -65,13 +67,60 @@ public:
 				cartas.removeLast();
 	}
 
-	// Una carta por línea, separadas por '\n'. "??" boca abajo, "___" si vacía.
-	std::string mostrar() {
+	// Muestra las cartas ocultas y llama a otra función si no es el caso.
+	string mostrar() {
 		if (vacia())
-			return "___";
-		std::string texto = (*this)[0].estaBocaArriba() ? (*this)[0].toString() : "?__";
-		for (int i = 1; i < tamano(); i++)
-			texto += "\n" + ((*this)[i].estaBocaArriba() ? (*this)[i].toString() : std::string("??"));
+			return "";
+
+		string texto = "";
+		for (int i = 0; i < tamano(); i++) {
+			Carta carta = (*this)[i];
+
+			if (i > 0) {
+				texto += "\n";
+			}
+			if (!carta.estaBocaArriba()) {
+				texto += "┌───────┐\n";
+				texto += "│";
+				texto += "\033[45m░░░░░░░";
+				texto += "\033[0m│";
+			}
+			else if (carta.estaBocaArriba() && i < tamano() - 1) {
+				texto += dibujarCarta(carta, false);
+			}
+			else {
+				texto += dibujarCarta(carta, true);
+			}
+		}
+		return texto;
+	}
+
+	// Dibuja las cartas que no están ocultas.
+	string dibujarCarta(Carta carta, bool completa) {
+		string palo = (carta.getPalo() == 'E') ? "♠" : string(1, carta.getPalo());
+
+		string cartaTexto = carta.toString();
+		string valor = cartaTexto.substr(0, cartaTexto.find('-'));
+
+		string texto = "┌───────┐\n";
+
+		texto += "│" + valor;
+		for (int i = 0; i < 7 - valor.length(); i++)
+			texto += " ";
+		texto += "│";
+
+		if (completa) {
+			texto += "\n│       │\n";
+			texto += "│   " + palo + "   │\n";
+			texto += "│       │\n";
+
+			texto += "│";
+			for (int i = 0; i < 7 - valor.length(); i++)
+				texto += " ";
+			texto += valor + "│\n";
+
+			texto += "└───────┘";
+		}
 		return texto;
 	}
 };
