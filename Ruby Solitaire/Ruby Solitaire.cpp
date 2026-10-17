@@ -29,7 +29,7 @@ void actualizarPantalla(JuegoSpider& juego, bool mostrarJuego) {
     system("cls");
 
     if (mostrarJuego)
-        cout << endl << juego.mostrarEstado() << endl;
+        cout << endl << juego.mostrarEstado() << endl << endl;
 }
 
 int leerEntrada(bool& sigue, string mensaje) {
@@ -65,7 +65,7 @@ int main() {
     continuar = true;
     while (continuar) {
 
-        cout << "Qué quieres hacer?" << endl << "[1].Spider Solitaire" << endl << "[2].Juego 2" << endl;
+        cout << "Qué quieres hacer?" << endl << "[1].Juego 1" << endl << "[2].Spider Solitaire" << endl;
         string opcion;
         cout << "Seleccione una opción entre 1 y 2: ";
         getline(cin, opcion);
@@ -76,7 +76,12 @@ int main() {
             getline(cin, opcion);
         }
         cout << endl;
+
         if (opcion == "1") {
+            cout << "Holiwiii mrweep!!! UwU" << endl;
+        }
+
+        else if (opcion == "2") {
             JuegoSpider juego;
             juego.iniciarPartida();
 
@@ -155,7 +160,7 @@ int main() {
                         }
                     }
                 }
-
+                
                 else if (accion == "2") {
                     juego.repartir();
                 }
@@ -175,11 +180,8 @@ int main() {
 
             actualizarPantalla(juego, false);
         }
-        else if (opcion == "2") {
-            cout << "Holiwiii mrweep!!! UwU" << endl;
-        }
         continuar = repetir();
     }
 
-    return 0;
+	return 0;
 }
