@@ -2,6 +2,7 @@
 #define JUEGOSPIDER_H
 
 #include <string>
+#include <cctype>
 #include "Pila.h"
 #include "Carta.h"
 #include "Lista.h"
@@ -192,8 +193,8 @@ public:
 
 	// Tablero como texto. Cada columna usa 6 lienas para las cartas tapadas y 7 para las que están volteadas. 5 espacios de separación.
 	string mostrarEstado() {
-		const int anchoColumna = 9;
-		const string separacion = "     ";
+		const int anchoColumna = 11;
+		const string separacion = "    ";
 		string texto = "Mazo: " + to_string(mazo.tamano()) + " cartas, repartos: "
 			+ to_string(mazo.cantidadReparticiones()) + ", escaleras: "
 			+ to_string(escalerasCompletadas) + "/8\n\n";
@@ -208,7 +209,7 @@ public:
 
 		for (int i = 0; i < 10; i++) {
 			filas[i] = columnas[i].mostrar();
-			
+
 			int lineas = filas[i].empty() ? 0 : 1;
 
 			for (char c : filas[i]) {
@@ -224,13 +225,17 @@ public:
 
 		for (int l = 0; l < altura; l++) {
 			texto += "\n";
+
 			for (int i = 0; i < 10; i++) {
 				string linea = extraerLinea(filas[i], l);
+
 				while (linea.size() < anchoColumna)
 					linea += " ";
+
 				texto += linea + separacion;
 			}
 		}
+
 		return texto;
 	}
 
