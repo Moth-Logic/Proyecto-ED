@@ -5,6 +5,7 @@
 #include "Lista.h"
 
 using std::string;
+using std::to_string;
 
 // Una columna de la mesa (hay 10). [0] = base de la columna, último = tope.
 class PilaCartaSpider {
@@ -69,6 +70,9 @@ public:
 
 	// Muestra las cartas ocultas y llama a otra función si no es el caso.
 	string mostrar() {
+		int tamanoBocaArriba = tamano();
+		int tamanoBocaAbajo = 0;
+
 		if (vacia())
 			return "";
 
@@ -80,46 +84,53 @@ public:
 				texto += "\n";
 			}
 			if (!carta.estaBocaArriba()) {
-				texto += "┌───────┐\n";
+				texto += "┌───────┐  \n";
 				texto += "│";
 				texto += "\033[45m░░░░░░░";
-				texto += "\033[0m│";
+				texto += "\033[0m│  ";
+				tamanoBocaAbajo++;
 			}
 			else if (carta.estaBocaArriba() && i < tamano() - 1) {
-				texto += dibujarCarta(carta, false);
+				texto += dibujarCarta(to_string(tamanoBocaArriba - tamanoBocaAbajo), carta, false);
+				tamanoBocaArriba--;
 			}
 			else {
-				texto += dibujarCarta(carta, true);
+				texto += dibujarCarta(to_string(tamanoBocaArriba - tamanoBocaAbajo), carta, true);
+				tamanoBocaArriba--;
 			}
 		}
 		return texto;
 	}
 
 	// Dibuja las cartas que no están ocultas.
-	string dibujarCarta(Carta carta, bool completa) {
+	string dibujarCarta(string tamanoBocaArriba, Carta carta, bool completa) {
 		string palo = (carta.getPalo() == 'E') ? "♠" : string(1, carta.getPalo());
 
 		string cartaTexto = carta.toString();
 		string valor = cartaTexto.substr(0, cartaTexto.find('-'));
 
-		string texto = "┌───────┐\n";
+		string texto = "┌───────┐  \n";
 
 		texto += "│" + valor;
 		for (int i = 0; i < 7 - valor.length(); i++)
 			texto += " ";
-		texto += "│";
+		texto += "│" + tamanoBocaArriba;
+
+		if (tamanoBocaArriba.length() == 1) {
+			texto += " ";
+		}
 
 		if (completa) {
-			texto += "\n│       │\n";
-			texto += "│   " + palo + "   │\n";
-			texto += "│       │\n";
+			texto += "\n│       │  \n";
+			texto += "│   " + palo + "   │  \n";
+			texto += "│       │  \n";
 
 			texto += "│";
 			for (int i = 0; i < 7 - valor.length(); i++)
 				texto += " ";
-			texto += valor + "│\n";
+			texto += valor + "│  \n";
 
-			texto += "└───────┘";
+			texto += "└───────┘  ";
 		}
 		return texto;
 	}
