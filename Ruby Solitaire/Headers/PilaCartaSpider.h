@@ -7,29 +7,34 @@
 using std::string;
 using std::to_string;
 
-// Una columna de la mesa (hay 10). [0] = base de la columna, último = tope.
+// Representa una de las 10 columnas de la mesa, con la base en la posición 0 y el tope al final.
 class PilaCartaSpider {
 private:
 	Lista<Carta> cartas;
 
 public:
+	// Agrega una carta encima de la columna.
 	void push(const Carta& carta) { cartas.append(carta); }
 
+	// Devuelve la carta de la posición indicada tomando la base como 0.
 	Carta operator[](int indice) { return cartas.at(indice); }
+	// Devuelve la carta del tope o una carta vacía si la columna no tiene cartas.
 	Carta tope() { return vacia() ? Carta() : (*this)[tamano() - 1]; }
+	// Indica si la columna está sin cartas.
 	bool vacia() { return tamano() == 0; }
+	// Devuelve la cantidad de cartas de la columna.
 	int tamano() { return cartas.getSize(); }
 
-	// Voltea el tope solo si está boca abajo.
+	// Voltea el tope solo cuando esa carta está boca abajo.
 	void voltearTope() {
 		if (!vacia() && !(*this)[tamano() - 1].estaBocaArriba())
 			cartas.at(tamano() - 1).voltear();
 	}
 
+	// Deja la columna sin cartas.
 	void limpiar() { cartas.clear(); }
 
-	// Quita las últimas 'cantidad' cartas y las devuelve en orden base->tope.
-	// Devuelve puntero con new: el que llama debe hacer delete.
+	// Quita las últimas 'cantidad' cartas y las devuelve en una lista nueva que el llamador debe liberar.
 	Lista<Carta>* extraerGrupo(int cantidad) {
 		Lista<Carta>* grupo = new Lista<Carta>();
 		for (int i = tamano() - cantidad; i < tamano(); i++)
@@ -39,8 +44,7 @@ public:
 		return grupo;
 	}
 
-	// true si desde 'desde' hasta el tope todas las cartas están boca arriba
-	// y cada una vale 1 menos que la anterior leyendo hacia el tope.
+	// Indica si desde la carta 'desde' hasta el tope todas están boca arriba y bajan de a uno en valor.
 	bool formaEscaleraAscendente(int desde) {
 		for (int i = desde; i < tamano(); i++) {
 			if (!(*this)[i].estaBocaArriba())
@@ -51,7 +55,7 @@ public:
 		return true;
 	}
 
-	// Escalera completa K->A del mismo palo, boca arriba (se elimina del juego).
+	// Indica si la columna completa es una escalera K->A del mismo palo y boca arriba.
 	bool esEscaleraCompleta() {
 		if (tamano() != 13 || (*this)[0].getValor() != 13)
 			return false;
@@ -61,14 +65,14 @@ public:
 		return formaEscaleraAscendente(0);
 	}
 
-	// Quita las 13 cartas de la escalera completa si la hay.
+	// Quita las 13 cartas de la escalera completa cuando existe.
 	void extraerEscaleraCompleta() {
 		if (esEscaleraCompleta())
 			for (int i = 0; i < 13; i++)
 				cartas.removeLast();
 	}
 
-	// Muestra las cartas ocultas y llama a otra función si no es el caso.
+	// Arma el texto de la columna dibujando cada carta oculta y cada carta visible.
 	string mostrar() {
 		int tamanoBocaArriba = tamano();
 		int tamanoBocaAbajo = 0;
@@ -102,7 +106,7 @@ public:
 		return texto;
 	}
 
-	// Dibuja las cartas que no están ocultas.
+	// Dibuja una carta boca arriba, completa cuando es el tope y recortada cuando tiene cartas encima.
 	string dibujarCarta(string tamanoBocaArriba, Carta carta, bool completa) {
 		string palo = (carta.getPalo() == 'E') ? "♠" : string(1, carta.getPalo());
 

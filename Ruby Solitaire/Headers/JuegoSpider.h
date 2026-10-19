@@ -13,13 +13,9 @@
 using std::string;
 using std::to_string;
 
-// Controlador del Solitario Spider.
-// mover() y repartir() usan columnas 1..10; getColumna(i) usa 0..9.
-// Reglas: 104 cartas en 10 columnas (4 de 6 y 6 de 5, solo el tope boca
-// arriba); se mueven grupos boca arriba en escalera a una columna cuya carta
-// superior valga 1 más que la base del grupo (o a una vacía); repartir pone
-// una carta boca arriba en cada columna si ninguna está vacía (5 repartos);
-// cada escalera completa K->A se elimina; se gana con 8.
+// Controlador del Solitario Spider: reparte 104 cartas en 10 columnas, valida los
+// movimientos en escalera, permite repartir y maneja el deshacer y el rehacer.
+// mover() y repartir() usan columnas 1..10, mientras que getColumna(i) usa 0..9.
 class JuegoSpider {
 private:
 	PilaCartaSpider columnas[10];
@@ -30,17 +26,20 @@ private:
 	bool partidaTerminada;
 	string ultimoError;
 
+	// Libera los estados guardados para rehacer.
 	void limpiarRehacer() {
 		while (!historialRehacer.isEmpty())
 			delete historialRehacer.pop();
 	}
 
+	// Libera los estados guardados para deshacer y para rehacer.
 	void limpiarHistoriales() {
 		while (!historialDeshacer.isEmpty())
 			delete historialDeshacer.pop();
 		limpiarRehacer();
 	}
 
+	// Copia el estado actual de columnas, mazo y contadores en un estado nuevo.
 	EstadoSpider* crearSnapshot() {
 		EstadoSpider* s = new EstadoSpider();
 		for (int i = 0; i < 10; i++) {
@@ -51,7 +50,6 @@ private:
 		s->mazo = new Lista<Carta>();
 		while (mazo.tamano() > 0)
 			s->mazo->append(mazo.sacarCarta());
-		// Recarga el mazo sin alterarlo (la lista quedó en orden de salida).
 		for (int i = s->mazo->getSize() - 1; i >= 0; i--)
 			mazo.agregarCarta(s->mazo->at(i));
 		s->reparticionesRestantes = mazo.cantidadReparticiones();
@@ -59,7 +57,7 @@ private:
 		return s;
 	}
 
-	// Aplica el snapshot y libera su memoria.
+	// Restaura un estado guardado en las columnas y el mazo, y libera su memoria.
 	void aplicarEstado(EstadoSpider* s) {
 		for (int i = 0; i < 10; i++) {
 			columnas[i].limpiar();
@@ -74,6 +72,7 @@ private:
 		delete s;
 	}
 
+	// Revisa si el grupo forma escalera y si la columna destino acepta la carta base.
 	bool movimientoValido(int origen, int destino, int cantidad) {
 		if (partidaTerminada) {
 			ultimoError = "La partida está terminada.";
@@ -98,11 +97,14 @@ private:
 	}
 
 public:
+	// Crea la partida sin escaleras completadas y sin terminar.
 	JuegoSpider() : escalerasCompletadas(0), partidaTerminada(false) {}
+	// Libera los estados guardados al destruir la partida.
 	~JuegoSpider() {
 		limpiarHistoriales();
 	}
 
+	// Reinicia el mazo, las columnas y los contadores para empezar una partida nueva.
 	void iniciarPartida() {
 		limpiarHistoriales();
 		mazo.reiniciar();
@@ -121,6 +123,7 @@ public:
 			columnas[i].voltearTope();
 	}
 
+	// Guarda el estado, mueve el grupo de cartas entre columnas y elimina escaleras completas.
 	bool mover(int origen, int destino, int cantidad) {
 		if (!movimientoValido(origen, destino, cantidad))
 			return false;
@@ -137,6 +140,7 @@ public:
 		return true;
 	}
 
+	// Reparte una carta boca arriba en cada columna cuando hay repartos disponibles.
 	bool repartir() {
 		if (partidaTerminada) {
 			ultimoError = "La partida esta terminada.";
@@ -162,6 +166,7 @@ public:
 		return true;
 	}
 
+	// Devuelve la jugada anterior y la deja disponible para rehacer.
 	bool deshacer() {
 		if (partidaTerminada || historialDeshacer.isEmpty())
 			return false;
@@ -170,6 +175,7 @@ public:
 		return true;
 	}
 
+	// Reaplica la última jugada que se había deshecho.
 	bool rehacer() {
 		if (partidaTerminada || historialRehacer.isEmpty())
 			return false;
@@ -178,8 +184,10 @@ public:
 		return true;
 	}
 
+	// Marca la partida como terminada cuando el jugador abandona.
 	void abandonar() { partidaTerminada = true; }
 
+	// Elimina de las columnas todas las escaleras K->A que se hayan completado.
 	void detectarYeliminarEscaleras() {
 		for (int i = 0; i < 10; i++)
 			while (columnas[i].esEscaleraCompleta()) {
@@ -189,9 +197,10 @@ public:
 			}
 	}
 
+	// Indica si ya se completaron las 8 escaleras que dan la victoria.
 	bool juegoGanado() { return escalerasCompletadas >= 8; }
 
-	// Tablero como texto. Cada columna usa 6 lienas para las cartas tapadas y 7 para las que están volteadas. 5 espacios de separación.
+	// Arma el texto del tablero con el conteo del mazo y las 10 columnas alineadas.
 	string mostrarEstado() {
 		const int anchoColumna = 11;
 		const string separacion = "    ";
@@ -239,6 +248,7 @@ public:
 		return texto;
 	}
 
+	// Revisa que la columna de origen esté entre 1 y 10.
 	bool origenValido(int origen) {
 		if (origen < 1 || origen > 10) {
 			ultimoError = "Columna de origen inválida.";
@@ -247,6 +257,7 @@ public:
 		return true;
 	}
 
+	// Revisa que la columna de destino esté entre 1 y 10.
 	bool destinoValido(int origen, int destino) {
 		if (destino < 1 || destino > 10) {
 			ultimoError = "Columna de destino inválida.";
@@ -255,6 +266,7 @@ public:
 		return true;
 	}
 
+	// Revisa que la cantidad de cartas sea al menos 1 y no supere el tamaño de la columna.
 	bool cantidadValida(int origen, int cantidad) {
 		if (cantidad < 1 || cantidad > columnas[origen - 1].tamano()) {
 			ultimoError = "Cantidad inválida.";
@@ -263,14 +275,20 @@ public:
 		return true;
 	}
 
+	// Devuelve la cantidad de escaleras completadas.
 	int getEscalerasCompletadas() { return escalerasCompletadas; }
+	// Devuelve los repartos que le quedan al mazo.
 	int getReparticionesRestantes() { return mazo.cantidadReparticiones(); }
+	// Devuelve la cantidad de cartas que quedan en el mazo.
 	int getCartasMazo() { return mazo.tamano(); }
+	// Indica si la partida ya terminó.
 	bool estaPartidaTerminada() { return partidaTerminada; }
+	// Devuelve la columna indicada con índices de 0 a 9.
 	PilaCartaSpider& getColumna(int indice) { return columnas[indice]; }
+	// Devuelve el último mensaje de error generado por una validación.
 	string getUltimoError() { return ultimoError; }
 
-	// Línea 'n' (0-based) de un texto con '\n'; espacios si no existe.
+	// Devuelve la línea 'linea' (0-based) de un texto separado por saltos de línea.
 	static string extraerLinea(const string& texto, int linea) {
 		size_t pos = 0;
 		for (int i = 0; i < linea; i++) {

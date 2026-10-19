@@ -139,17 +139,17 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Carta.h" />
-    <ClInclude Include="EstadoSpider.h" />
-    <ClInclude Include="JuegoSpider.h" />
-    <ClInclude Include="Lista.h" />
-    <ClInclude Include="Mazo.h" />
-    <ClInclude Include="Node.h" />
-    <ClInclude Include="Pila.h" />
-    <ClInclude Include="PilaCartaSpider.h" />
+    <ClInclude Include="Headers\Carta.h" />
+    <ClInclude Include="Headers\EstadoSpider.h" />
+    <ClInclude Include="Headers\JuegoSpider.h" />
+    <ClInclude Include="Headers\Lista.h" />
+    <ClInclude Include="Headers\Mazo.h" />
+    <ClInclude Include="Headers\Node.h" />
+    <ClInclude Include="Headers\Pila.h" />
+    <ClInclude Include="Headers\PilaCartaSpider.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Ruby Solitaire.cpp" />
+    <ClCompile Include="Source\Ruby Solitaire.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

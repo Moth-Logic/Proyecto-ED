@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <string>
 #include <sstream>
-#include "JuegoSpider.h"
+#include "../Headers/JuegoSpider.h"
 
 using std::string;
 using std::istringstream;
@@ -10,6 +10,7 @@ using std::cin;
 using std::cout;
 using std::endl;
 
+// Pregunta al jugador si quiere jugar otra partida y valida la respuesta S o N.
 bool repetir() {
     string respuesta;
     cout << endl << "¿Desea jugar de nuevo? (S/N): ";
@@ -25,6 +26,7 @@ bool repetir() {
     return respuesta == "s" || respuesta == "S";
 }
 
+// Limpia la pantalla y muestra el tablero cuando el jugador debe verlo.
 void actualizarPantalla(JuegoSpider& juego, bool mostrarJuego) {
     system("cls");
 
@@ -32,6 +34,7 @@ void actualizarPantalla(JuegoSpider& juego, bool mostrarJuego) {
         cout << endl << juego.mostrarEstado() << endl << endl;
 }
 
+// Lee un número entero desde el teclado y devuelve sigue = false cuando el jugador escribe Q.
 int leerEntrada(bool& sigue, string mensaje) {
     string entrada;
     int numero;
@@ -65,6 +68,7 @@ int main() {
     continuar = true;
     while (continuar) {
 
+        // Muestra el menú principal y valida la opción elegida.
         cout << "Qué quieres hacer?" << endl << "[1].Juego 1" << endl << "[2].Spider Solitaire" << endl;
         string opcion;
         cout << "Seleccione una opción entre 1 y 2: ";
@@ -85,6 +89,7 @@ int main() {
             JuegoSpider juego;
             juego.iniciarPartida();
 
+            // Ciclo principal de la partida: dibuja el tablero y pide una acción.
             while (!juego.estaPartidaTerminada()) {
 
                 actualizarPantalla(juego, true);
@@ -111,12 +116,13 @@ int main() {
                     int destino = 0;
                     int cantidad = 0;
 
+                    // Pide origen, destino y cantidad hasta que el movimiento se realice o el jugador salga con Q.
                     while (!movimientoRealizado && seguir) {
 
-                        //Ingresando origen.
                         origen = leerEntrada(seguir, "Ingrese la columna de origen (Q para volver): ");
                         actualizarPantalla(juego, true);
 
+                        // Repite la lectura del origen mientras la columna no sea válida.
                         while (seguir && !juego.origenValido(origen)) {
                             cout << juego.getUltimoError() << endl;
 
@@ -125,10 +131,10 @@ int main() {
                         }
 
                         if (seguir) {
-                            //Ingresando destino.
                             destino = leerEntrada(seguir, "Ingrese la columna de destino (Q para volver): ");
                             actualizarPantalla(juego, true);
 
+                            // Repite la lectura del destino mientras la columna no sea válida.
                             while (seguir && !juego.destinoValido(origen, destino)) {
                                 cout << juego.getUltimoError() << endl;
 
@@ -138,10 +144,10 @@ int main() {
                         }
 
                         if (seguir) {
-                            //Ingresando cantidad.
                             cantidad = leerEntrada(seguir, "Ingrese la cantidad de cartas (Q para volver): ");
                             actualizarPantalla(juego, true);
 
+                            // Repite la lectura de la cantidad mientras no quepa en la columna de origen.
                             while (seguir && !juego.cantidadValida(origen, cantidad)) {
                                 cout << juego.getUltimoError() << endl;
 
@@ -153,6 +159,7 @@ int main() {
                         if (seguir) {
                             movimientoRealizado = juego.mover(origen, destino, cantidad);
 
+                            // Avisa el motivo cuando la regla del juego rechaza el movimiento.
                             if (!movimientoRealizado) {
                                 actualizarPantalla(juego, true);
                                 cout << juego.getUltimoError() << endl;
@@ -161,18 +168,22 @@ int main() {
                     }
                 }
                 
+                // Reparte una carta nueva en cada columna.
                 else if (accion == "2") {
                     juego.repartir();
                 }
 
+                // Devuelve el estado anterior a la última jugada.
                 else if (accion == "3") {
                     juego.deshacer();
                 }
 
+                // Vuelve a aplicar la última jugada deshecha.
                 else if (accion == "4") {
                     juego.rehacer();
                 }
 
+                // Termina la partida actual y vuelve al menú principal.
                 else if (accion == "5") {
                     juego.abandonar();
                 }

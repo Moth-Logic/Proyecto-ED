@@ -6,13 +6,13 @@
 #include "Pila.h"
 #include "Carta.h"
 
-// Mazo del Spider: 104 cartas (2 naipes de espadas). El tope de la pila es
-// la próxima carta a repartir. Máximo 5 reparticiones de 10 cartas.
+// Mazo de 104 cartas de espadas (8 copias por valor) con 5 repartos de 10 cartas.
 class Mazo {
 private:
 	Pila<Carta> cartas;
 	int reparticionesRestantes;
 
+	// Llena el mazo con las 104 cartas antes de barajarlo.
 	void llenar() {
 		for (int valor = 1; valor <= 13; valor++)
 			for (int i = 0; i < 8; i++)
@@ -20,11 +20,13 @@ private:
 	}
 
 public:
+	// Prepara el generador aleatorio y deja un mazo barajado listo para jugar.
 	Mazo() : reparticionesRestantes(5) {
 		std::srand((unsigned)std::time(nullptr));
 		reiniciar();
 	}
 
+	// Vuelve a llenar el mazo, lo baraja y restaura los 5 repartos.
 	void reiniciar() {
 		cartas.clear();
 		llenar();
@@ -32,7 +34,7 @@ public:
 		reparticionesRestantes = 5;
 	}
 
-	// Fisher-Yates sobre un arreglo temporal (104 es el tamaño fijo del mazo).
+	// Baraja las 104 cartas con el algoritmo Fisher-Yates sobre un arreglo temporal.
 	void barajar() {
 		Carta arr[104];
 		int n = cartas.getSize();
@@ -48,14 +50,20 @@ public:
 			cartas.push(arr[i]);
 	}
 
+	// Saca la próxima carta del tope del mazo.
 	Carta sacarCarta() { return cartas.pop(); }
+	// Devuelve la cantidad de cartas que quedan en el mazo.
 	int tamano() { return cartas.getSize(); }
+	// Devuelve cuántos repartos le quedan al mazo.
 	int cantidadReparticiones() { return reparticionesRestantes; }
+	// Descuenta un reparto del contador del mazo.
 	void decrementarReparticiones() { reparticionesRestantes--; }
 
-	// Apoyo para snapshots (deshacer/rehacer): vaciar, recargar y restaurar.
+	// Vacía el mazo para reconstruirlo desde un estado guardado.
 	void vaciar() { cartas.clear(); }
+	// Apila una carta en el tope del mazo al reconstruirlo.
 	void agregarCarta(const Carta& carta) { cartas.push(carta); }
+	// Fija los repartos restantes al reconstruir un estado guardado.
 	void establecerReparticiones(int cantidad) { reparticionesRestantes = cantidad; }
 };
 
