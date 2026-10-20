@@ -25,13 +25,13 @@ Todo el manejo de cartas, columnas, mazos e historial se apoya en estructuras de
 
 ## Características
 
-- 🃏 **Mazo completo de Spider**: 104 cartas (8 copias de cada valor) barajadas con Fisher-Yates.
-- 📋 **10 columnas y 5 repartos**, con volteo automático de la carta superior.
-- 🔗 **Movimientos en escalera**: se mueven grupos de cartas consecutivas y boca arriba.
-- 🏆 **Detección automática** de escaleras completas K → A, que se retiran de la mesa.
-- ↩️ **Deshacer y rehacer** sin límite mientras la partida está activa, mediante instantáneas del estado.
-- ✅ **Validación de entradas** con mensajes claros para columnas, cantidades y jugadas inválidas.
-- 💻 **Interfaz de consola en UTF-8** con cartas dibujadas, palos y columnas alineadas.
+-  **Mazo completo de Spider**: 104 cartas (8 copias de cada valor) barajadas con Fisher-Yates.
+-  **10 columnas y 5 repartos**, con volteo automático de la carta superior.
+-  **Movimientos en escalera**: se mueven grupos de cartas consecutivas y boca arriba.
+-  **Detección automática** de escaleras completas K → A, que se retiran de la mesa.
+-  **Deshacer y rehacer** sin límite mientras la partida está activa, mediante instantáneas del estado.
+-  **Validación de entradas** con mensajes claros para columnas, cantidades y jugadas inválidas.
+-  **Interfaz de consola en UTF-8** con cartas dibujadas, palos y columnas alineadas.
 
 ## Cómo jugar
 
