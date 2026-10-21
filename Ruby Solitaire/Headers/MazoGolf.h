@@ -28,12 +28,12 @@ public:
 		reiniciar();
 	}
 
-	// Vuelve a llenar el mazo, lo baraja y restaura los 5 repartos.
+	// Vuelve a llenar el mazo, lo baraja y restaura los 4 repartos.
 	void reiniciar() {
 		cartas.clear();
 		llenar();
 		barajar();
-		reparticionesRestantes = 5;
+		reparticionesRestantes = 4;
 	}
 
 	// Baraja las 52 cartas con el algoritmo Fisher-Yates sobre un arreglo temporal.
