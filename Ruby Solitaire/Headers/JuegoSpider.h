@@ -6,7 +6,7 @@
 #include "Pila.h"
 #include "Carta.h"
 #include "Lista.h"
-#include "Mazo.h"
+#include "MazoSpider.h"
 #include "PilaCartaSpider.h"
 #include "EstadoSpider.h"
 
@@ -19,7 +19,7 @@ using std::to_string;
 class JuegoSpider {
 private:
 	PilaCartaSpider columnas[10];
-	Mazo mazo;
+	MazoSpider mazo;
 	int escalerasCompletadas;
 	Pila<EstadoSpider*> historialDeshacer;
 	Pila<EstadoSpider*> historialRehacer;
