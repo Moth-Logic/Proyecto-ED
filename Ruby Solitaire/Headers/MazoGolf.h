@@ -14,9 +14,11 @@ private:
 
 	// Llena el mazo con las 52 cartas antes de barajarlo.
 	void llenar() {
-		for (int valor = 1; valor <= 13; valor++)
-			for (int i = 0; i < 8; i++)
-				cartas.push(Carta(valor, 'E'));
+		char palos = 'EDTC';
+		for (char paloActual : palos) {
+			for (int valor = 1; valor <= 13; valor++)
+					cartas.push(Carta(valor, paloActual));
+		}
 	}
 
 public:
