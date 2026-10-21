@@ -23,7 +23,7 @@ private:
 
 public:
 	// Prepara el generador aleatorio y deja un mazo barajado listo para jugar.
-	MazoGolf() : reparticionesRestantes(5) {
+	MazoGolf() : reparticionesRestantes(4) {
 		std::srand((unsigned)std::time(nullptr));
 		reiniciar();
 	}
