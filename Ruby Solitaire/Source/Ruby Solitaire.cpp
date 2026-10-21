@@ -2,7 +2,8 @@
 #include <windows.h>
 #include <string>
 #include <sstream>
-#include "../Headers/JuegoSpider.h"
+#include "JuegoGolf.h"
+#include "JuegoSpider.h"
 
 using std::string;
 using std::istringstream;
