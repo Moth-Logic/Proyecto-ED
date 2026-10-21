@@ -1,5 +1,5 @@
-#ifndef MAZO_H
-#define MAZO_H
+#ifndef MAZOSPIDER_H
+#define MAZOSPIDER_H
 
 #include <cstdlib>
 #include <ctime>
@@ -7,7 +7,7 @@
 #include "Carta.h"
 
 // Mazo de 104 cartas de espadas (8 copias por valor) con 5 repartos de 10 cartas.
-class Mazo {
+class MazoSpider {
 private:
 	Pila<Carta> cartas;
 	int reparticionesRestantes;
@@ -21,7 +21,7 @@ private:
 
 public:
 	// Prepara el generador aleatorio y deja un mazo barajado listo para jugar.
-	Mazo() : reparticionesRestantes(5) {
+	MazoSpider() : reparticionesRestantes(5) {
 		std::srand((unsigned)std::time(nullptr));
 		reiniciar();
 	}
