@@ -140,6 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Carta.h" />
+    <ClInclude Include="Headers\Consola.h" />
+    <ClInclude Include="Headers\Cursor.h" />
+    <ClInclude Include="Headers\Lienzo.h" />
+    <ClInclude Include="Headers\PantallaSpider.h" />
+    <ClInclude Include="Headers\Render.h" />
+    <ClInclude Include="Headers\Victoria.h" />
     <ClInclude Include="Headers\EstadoSpider.h" />
     <ClInclude Include="Headers\JuegoSpider.h" />
     <ClInclude Include="Headers\Lista.h" />
