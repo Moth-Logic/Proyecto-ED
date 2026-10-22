@@ -1,42 +1,44 @@
-#ifndef MAZO_H
-#define MAZO_H
+#ifndef MAZOGOLF_H
+#define MAZOGOLF_H
 
 #include <cstdlib>
 #include <ctime>
 #include "Pila.h"
 #include "Carta.h"
 
-// Mazo de 104 cartas de espadas (8 copias por valor) con 5 repartos de 10 cartas.
-class Mazo {
+// Mazo de 52 cartas los cautro palos (sin copias) 4 repartos de 13 cartas.
+class MazoGolf {
 private:
 	Pila<Carta> cartas;
 	int reparticionesRestantes;
 
-	// Llena el mazo con las 104 cartas antes de barajarlo.
+	// Llena el mazo con las 52 cartas antes de barajarlo.
 	void llenar() {
-		for (int valor = 1; valor <= 13; valor++)
-			for (int i = 0; i < 8; i++)
-				cartas.push(Carta(valor, 'E'));
+		char palos = 'EDTC';
+		for (char paloActual : palos) {
+			for (int valor = 1; valor <= 13; valor++)
+					cartas.push(Carta(valor, paloActual));
+		}
 	}
 
 public:
 	// Prepara el generador aleatorio y deja un mazo barajado listo para jugar.
-	Mazo() : reparticionesRestantes(5) {
+	MazoGolf() : reparticionesRestantes(4) {
 		std::srand((unsigned)std::time(nullptr));
 		reiniciar();
 	}
 
-	// Vuelve a llenar el mazo, lo baraja y restaura los 5 repartos.
+	// Vuelve a llenar el mazo, lo baraja y restaura los 4 repartos.
 	void reiniciar() {
 		cartas.clear();
 		llenar();
 		barajar();
-		reparticionesRestantes = 5;
+		reparticionesRestantes = 4;
 	}
 
-	// Baraja las 104 cartas con el algoritmo Fisher-Yates sobre un arreglo temporal.
+	// Baraja las 52 cartas con el algoritmo Fisher-Yates sobre un arreglo temporal.
 	void barajar() {
-		Carta arr[104];
+		Carta arr[52];
 		int n = cartas.getSize();
 		for (int i = 0; i < n; i++)
 			arr[i] = cartas.pop();

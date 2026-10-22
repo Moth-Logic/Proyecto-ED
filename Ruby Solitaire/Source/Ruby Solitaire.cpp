@@ -2,6 +2,13 @@
 #include <string>
 #include "../Headers/Consola.h"
 #include "../Headers/PantallaSpider.h"
+#include <sstream>
+#include "JuegoGolf.h"
+#include "JuegoSpider.h"
+#include "../Headers/Consola.h"
+#include "../Headers/PantallaSpider.h"
+#include <iostream>
+#include <string>
 
 using std::string;
 using std::cin;
