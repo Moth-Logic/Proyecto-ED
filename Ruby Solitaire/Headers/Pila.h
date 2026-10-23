@@ -40,6 +40,13 @@ public:
 		return element;
 	}
 
+	E top() {
+		if (top == nullptr) {
+			throw std::runtime_error("La pila está vacía.");
+		}
+		return top->element;
+	}
+
 	// Vacía la pila liberando todos sus nodos.
 	void clear() {
 		while (size > 0)
