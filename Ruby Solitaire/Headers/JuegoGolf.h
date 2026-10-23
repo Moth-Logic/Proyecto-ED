@@ -58,13 +58,21 @@ public:
 
         return true;
     }
-	bool mover(int origen) {
-		if (origen < 0 || origen >= 7) {
-			return false;
-		}
-		return true;
+    bool mover(int origen) {
 
-	};
+        if (!movimientoValido(origen)) {
+            return false;
+        }
+
+        historialDeshacer.push(crearSnapshot());
+        limpiarRehacer();
+
+        int idx = origen - 1;
+        Carta cartaMovida = columnas[idx].pop();
+        descarte.push(cartaMovida);
+
+        return true;
+    }
 	bool repartir();
 	bool deshacer();
 	bool rehacer();
