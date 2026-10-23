@@ -21,7 +21,21 @@ private:
 	Pila<EstadoGolf*> historialDeshacer;
 	Pila <EstadoGolf*> historialRehacer;
 	Pila <Carta> descarte;
-}
-
+public:
+	JuegoGolf();
+	~JuegoGolf();
+	EstadoGolf* crearSnapshot();
+	void aplicarEstado(EstadoGolf* estado);
+	bool mover(int origen, int destino);
+	bool repartir();
+	bool deshacer();
+	bool rehacer();
+	PilaCartaGolf& getColumna(int indice);
+	int getPuntuación() const;
+	int getReparticionesRestantes() const;
+	int getCartasDescarte() const;
+	string mostrarMesa() const;
+	string getUltimoError() const;
+};
 
 #endif
