@@ -10,11 +10,17 @@
 #include "PilaCartaGolf.h"
 #include "EstadoGolf.h"
 
+using std::string;
+using std::to_string;
 
-
-
-
-
+class JuegoGolf {
+private: 
+	PilaCartaGolf columnas[7];
+	MazoGolf mazoGolf;
+	int puntuación;
+	Pila<EstadoGolf*> historialDeshacer;
+	Pila <EstadoGolf*> historialRehacer;
+}
 
 
 #endif
