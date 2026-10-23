@@ -70,37 +70,29 @@ public:
 
 	// Muestra las cartas ocultas y llama a otra función si no es el caso.
 	string mostrar() {
-		int tamanoBocaArriba = tamano();
-		int tamanoBocaAbajo = 0;
+	int tamanoBocaArriba = tamano();
 
-		if (vacia())
-			return "";
+	if (vacia())
+		return "";
 
-		string texto = "";
-		for (int i = 0; i < tamano(); i++) {
-			Carta carta = (*this)[i];
+	string texto = "";
+	for (int i = 0; i < tamano(); i++) {
+		Carta carta = (*this)[i];
 
-			if (i > 0) {
-				texto += "\n";
-			}
-			if (!carta.estaBocaArriba()) {
-				texto += "┌───────┐  \n";
-				texto += "│";
-				texto += "\033[45m░░░░░░░";
-				texto += "\033[0m│  ";
-				tamanoBocaAbajo++;
-			}
-			else if (carta.estaBocaArriba() && i < tamano() - 1) {
-				texto += dibujarCarta(to_string(tamanoBocaArriba - tamanoBocaAbajo), carta, false);
-				tamanoBocaArriba--;
-			}
-			else {
-				texto += dibujarCarta(to_string(tamanoBocaArriba - tamanoBocaAbajo), carta, true);
-				tamanoBocaArriba--;
-			}
+		if (i > 0) {
+			texto += "\n";
 		}
-		return texto;
+		else if (i < tamano() - 1) {
+			texto += dibujarCarta(to_string(tamanoBocaArriba), carta, false);
+			tamanoBocaArriba--;
+		}
+		else {
+			texto += dibujarCarta(to_string(tamanoBocaArriba), carta, true);
+			tamanoBocaArriba--;
+		}
 	}
+	return texto;
+}
 
 	// Dibuja las cartas que no están ocultas.
 	string dibujarCarta(string tamanoBocaArriba, Carta carta, bool completa) {
