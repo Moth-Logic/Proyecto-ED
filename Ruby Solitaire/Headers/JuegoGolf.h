@@ -26,7 +26,13 @@ public:
 	~JuegoGolf();
 	EstadoGolf* crearSnapshot();
 	void aplicarEstado(EstadoGolf* estado);
-	bool mover(int origen, int destino);
+	bool mover(int origen) {
+		if (origen < 0 || origen >= 7) {
+			return false;
+		}
+		return true;
+
+	};
 	bool repartir();
 	bool deshacer();
 	bool rehacer();
