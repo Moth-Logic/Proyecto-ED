@@ -104,7 +104,23 @@ public:
 
 	// Dibuja las cartas que no están ocultas.
 	string dibujarCarta(string tamanoBocaArriba, Carta carta, bool completa) {
-		string palo = (carta.getPalo() == 'E') ? "♠" : string(1, carta.getPalo());
+		string palo = "";
+		switch (carta.getPalo()) {
+			case 'E':
+				palo = "♠";
+				break;
+			case 'D':
+				palo = "♦";
+				break;
+			case 'T':
+				palo = "♣";
+				break;
+			case 'C':
+				palo = "♥";
+				break;
+			default:
+				palo = "";
+		}
 
 		string cartaTexto = carta.toString();
 		string valor = cartaTexto.substr(0, cartaTexto.find('-'));
