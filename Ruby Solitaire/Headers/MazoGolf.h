@@ -14,12 +14,12 @@ private:
 
 	// Llena el mazo con las 52 cartas antes de barajarlo.
 	void llenar() {
-		const char palos[] = {'E', 'D', 'T', 'C'};
-		for (char paloActual : palos) {
-			for (int valor = 1; valor <= 13; valor++)
-					cartas.push(Carta(valor, paloActual));
-		}
+	const string palos = "EDTC";
+	for (char paloActual : palos) {
+		for (int valor = 1; valor <= 13; valor++)
+			cartas.push(Carta(valor, paloActual));
 	}
+}
 
 public:
 	// Prepara el generador aleatorio y deja un mazo barajado listo para jugar.
