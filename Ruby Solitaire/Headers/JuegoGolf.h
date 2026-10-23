@@ -26,6 +26,38 @@ public:
 	~JuegoGolf();
 	EstadoGolf* crearSnapshot();
 	void aplicarEstado(EstadoGolf* estado);
+    bool movimientoValido(int origen) {
+        if (origen < 1 || origen > 7) {
+            ultimoError = "Columna de origen inválida.";
+            return false;
+        }
+
+        int posiciones = origen - 1;
+
+        if (columnas[posiciones].vacia()) {
+			ultimoError = "La columna de origen está vacía.";	
+            return false;
+        }
+
+        if (!descarte.isEmpty()) {
+            Carta cartaOrigen = columnas[posiciones].tope();
+            Carta cartaDescarte = descarte.top(); 
+
+            int valOrigen = cartaOrigen.getValor();
+            int valDescarte = cartaDescarte.getValor();
+
+            bool esContiguo = (std::abs(valOrigen - valDescarte) == 1);
+
+            bool esCicloKA = (valOrigen == 1 && valDescarte == 13) || (valOrigen == 13 && valDescarte == 1);
+
+            if (!esContiguo && !esCicloKA) {
+                ultimoError = "La carta no es contigua a la carta del descarte.";
+                return false;
+            }
+        }
+
+        return true;
+    }
 	bool mover(int origen) {
 		if (origen < 0 || origen >= 7) {
 			return false;
