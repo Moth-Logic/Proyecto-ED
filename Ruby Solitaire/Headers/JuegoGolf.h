@@ -20,6 +20,7 @@ private:
 	int puntuación;
 	Pila<EstadoGolf*> historialDeshacer;
 	Pila <EstadoGolf*> historialRehacer;
+	Pila <Carta> descarte;
 }
 
 
