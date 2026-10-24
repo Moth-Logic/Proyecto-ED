@@ -70,7 +70,7 @@ int main() {
     while (continuar) {
 
         // Muestra el menú principal y valida la opción elegida.
-        cout << "Qué quieres hacer?" << endl << "[1].Juego 1" << endl << "[2].Spider Solitaire" << endl;
+        cout << "Qué quieres hacer?" << endl << "[1].Golf Solitaire" << endl << "[2].Spider Solitaire" << endl;
         string opcion;
         cout << "Seleccione una opción entre 1 y 2: ";
         getline(cin, opcion);
@@ -83,7 +83,8 @@ int main() {
         cout << endl;
 
         if (opcion == "1") {
-            cout << "Holiwiii mrweep!!! UwU" << endl;
+			pass
+			
         }
 
         else if (opcion == "2") {
