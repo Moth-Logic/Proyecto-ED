@@ -71,12 +71,47 @@ public:
 
         return true;
     }
-	bool deshacer() {
-
-	}
-	bool rehacer() {
-		
+bool deshacer() {
+    if (historialUndo.vacia()) {
+        ultimoError = "No hay movimientos para deshacer.";
+        return false;
     }
+	
+    EstadoGolf estadoActual(columnas, descarte, puntuacion, rondas);
+    historialRedo.push(estadoActual);
+
+    EstadoGolf estadoAnterior = historialUndo.pop();
+	
+    for (int i = 0; i < 7; ++i) {
+        columnas[i] = estadoAnterior.getColumna(i);
+    }
+    descarte = estadoAnterior.getDescarte();
+    puntuacion = estadoAnterior.getPuntuacion();
+    rondas = estadoAnterior.getRondas();
+
+    return true;
+}
+
+bool rehacer() {
+    if (historialRedo.vacia()) {
+        ultimoError = "No hay movimientos para rehacer.";
+        return false;
+    }
+	
+    EstadoGolf estadoActual(columnas, descarte, puntuacion, rondas);
+    historialUndo.push(estadoActual);
+	
+    EstadoGolf estadoSiguiente = historialRedo.pop();
+	
+    for (int i = 0; i < 7; ++i) {
+        columnas[i] = estadoSiguiente.getColumna(i);
+    }
+    descarte = estadoSiguiente.getDescarte();
+    puntuacion = estadoSiguiente.getPuntuacion();
+    rondas = estadoSiguiente.getRondas();
+
+    return true;
+}
 	bool abandonar() {
         partidaTerminada = true;
         return true;
