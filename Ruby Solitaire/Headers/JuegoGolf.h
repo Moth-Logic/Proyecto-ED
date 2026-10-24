@@ -23,6 +23,7 @@ private:
 	Pila <Carta> descarte;
 	string ultimoError; 
 	int rondas;
+	bool partidaTerminada;
 public:
 	JuegoGolf();
 	~JuegoGolf();
