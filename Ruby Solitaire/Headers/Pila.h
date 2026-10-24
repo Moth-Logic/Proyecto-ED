@@ -1,19 +1,21 @@
 #ifndef PILA_H
-#pragma once
 #define PILA_H
 
 #include "Node.h"
+#include <stdexcept>
+
+using std::runtime_error;
 
 // Pila enlazada simple donde el tope es el último elemento apilado.
 template <typename E>
 class Pila {
 private:
-	Node<E>* top;
+	Node<E>* tope;
 	int size;
 
 public:
 	// Crea la pila vacía sin nodos en el tope.
-	Pila() : top(nullptr), size(0) {}
+	Pila() : tope(nullptr), size(0) {}
 
 	// Impide copiar la pila porque duplicaría los nodos sin liberarlos.
 	Pila(const Pila<E>&) = delete;
@@ -26,25 +28,28 @@ public:
 
 	// Apila un elemento nuevo en el tope de la pila.
 	void push(E element) {
-		top = new Node<E>(element, top);
+		tope = new Node<E>(element, tope);
 		size++;
 	}
 
 	// Saca y devuelve el elemento que está en el tope.
 	E pop() {
-		Node<E>* n = top;
+		if (tope == nullptr) {
+			throw runtime_error("La pila está vacía.");
+		}
+		Node<E>* n = tope;
 		E element = n->element;
-		top = n->next;
+		tope = n->next;
 		delete n;
 		size--;
 		return element;
 	}
 
 	E top() {
-		if (top == nullptr) {
-			throw std::runtime_error("La pila está vacía.");
+		if (tope == nullptr) {
+			throw runtime_error("La pila está vacía.");
 		}
-		return top->element;
+		return tope->element;
 	}
 
 	// Vacía la pila liberando todos sus nodos.
