@@ -18,8 +18,6 @@ private:
 	PilaCartaGolf columnas[7];
 	MazoGolf mazoGolf;
 	int puntuacion;
-	Pila<EstadoGolf*> historialDeshacer;
-	Pila <EstadoGolf*> historialRehacer;
 	Pila <Carta> descarte;
 	string ultimoError; 
 	int rondas;
