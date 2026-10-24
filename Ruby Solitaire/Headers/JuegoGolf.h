@@ -78,12 +78,15 @@ public:
 	bool abandonar() {
 	
 	}
-	PilaCartaGolf& getColumna(int indice);
-	int getPuntuacion() const;
-	int getReparticionesRestantes() const;
-	int getCartasDescarte() const;
-	string mostrarMesa() const;
-	string getUltimoError() const;
+	PilaCartaGolf& getColumna(int indice){
+		return columnas[indice];
+	}
+	int getPuntuacion() {
+		return puntuacion;
+	}
+	int getCartasDescarte() {
+		return descarte;
+	}
 };
 
 #endif
