@@ -17,7 +17,7 @@ class JuegoGolf {
 private: 
 	PilaCartaGolf columnas[7];
 	MazoGolf mazoGolf;
-	int puntuación;
+	int puntuacion;
 	Pila<EstadoGolf*> historialDeshacer;
 	Pila <EstadoGolf*> historialRehacer;
 	Pila <Carta> descarte;
@@ -26,8 +26,6 @@ private:
 public:
 	JuegoGolf();
 	~JuegoGolf();
-	EstadoGolf* crearSnapshot();
-	void aplicarEstado(EstadoGolf* estado);
     bool movimientoValido(int origen) {
         if (origen < 1 || origen > 7) {
             ultimoError = "Columna de origen inválida.";
@@ -66,16 +64,12 @@ public:
             return false;
         }
 
-        historialDeshacer.push(crearSnapshot());
-        limpiarRehacer();
-
-        int idx = origen - 1;
-        Carta cartaMovida = columnas[idx].pop();
+        int posiciones = origen - 1;
+        Carta cartaMovida = columnas[posiciones].pop();
         descarte.push(cartaMovida);
 
         return true;
     }
-	bool repartir();
 	bool deshacer();
 	bool rehacer();
 	PilaCartaGolf& getColumna(int indice);
