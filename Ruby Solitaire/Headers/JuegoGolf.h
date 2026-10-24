@@ -76,7 +76,8 @@ public:
 		
     }
 	bool abandonar() {
-	
+        partidaTerminada = true;
+        return true;
 	}
 	PilaCartaGolf& getColumna(int indice){
 		return columnas[indice];
