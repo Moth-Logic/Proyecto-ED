@@ -21,7 +21,8 @@ private:
 	Pila<EstadoGolf*> historialDeshacer;
 	Pila <EstadoGolf*> historialRehacer;
 	Pila <Carta> descarte;
-	string ultimoError;
+	string ultimoError; 
+	int rondas;
 public:
 	JuegoGolf();
 	~JuegoGolf();
