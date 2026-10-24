@@ -63,6 +63,8 @@ public:
             return false;
         }
 
+		guardarEstado();
+		
         int posiciones = origen - 1;
         Carta cartaMovida = columnas[posiciones].pop();
         descarte.push(cartaMovida);
