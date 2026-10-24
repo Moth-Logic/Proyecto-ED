@@ -85,7 +85,7 @@ public:
 		return puntuacion;
 	}
 	int getCartasDescarte() {
-		return descarte;
+		return descarte.getsize();
 	}
 };
 
