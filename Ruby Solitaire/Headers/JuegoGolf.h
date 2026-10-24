@@ -70,10 +70,17 @@ public:
 
         return true;
     }
-	bool deshacer();
-	bool rehacer();
+	bool deshacer() {
+
+	}
+	bool rehacer() {
+		
+    }
+	bool abandonar() {
+	
+	}
 	PilaCartaGolf& getColumna(int indice);
-	int getPuntuación() const;
+	int getPuntuacion() const;
 	int getReparticionesRestantes() const;
 	int getCartasDescarte() const;
 	string mostrarMesa() const;
