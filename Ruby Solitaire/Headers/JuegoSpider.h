@@ -78,11 +78,19 @@ private:
 			ultimoError = "La partida está terminada.";
 			return false;
 		}
+		else if (origen < 1 || origen > 10 || destino < 1 || destino > 10) {
+			ultimoError = "Columna fuera de rango.";
+			return false;
+		}
 		else if (origen == destino) {
 			ultimoError = "La columna de origen y destino no puede ser la misma.";
 			return false;
 		}
 		PilaCartaSpider& colA = columnas[origen - 1];
+		if (cantidad < 1 || cantidad > colA.tamano()) {
+			ultimoError = "Cantidad inválida.";
+			return false;
+		}
 		if (!colA.formaEscaleraAscendente(colA.tamano() - cantidad)) {
 			ultimoError = "El grupo no forma una escalera valida.";
 			return false;
@@ -195,6 +203,8 @@ public:
 				columnas[i].voltearTope();
 				escalerasCompletadas++;
 			}
+		if (escalerasCompletadas >= 8)
+			partidaTerminada = true;
 	}
 
 	// Indica si ya se completaron las 8 escaleras que dan la victoria.

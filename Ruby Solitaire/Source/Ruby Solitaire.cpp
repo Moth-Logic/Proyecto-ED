@@ -35,6 +35,14 @@ void actualizarPantalla(JuegoSpider& juego, bool mostrarJuego) {
         cout << endl << juego.mostrarEstado() << endl << endl;
 }
 
+// Limpia la pantalla y muestra el tablero del Golf con el formato de texto básico.
+void actualizarPantallaGolf(JuegoGolf& juego, bool mostrarJuego) {
+    system("cls");
+
+    if (mostrarJuego)
+        cout << endl << juego.mostrarEstado() << endl;
+}
+
 // Lee un número entero desde el teclado y devuelve sigue = false cuando el jugador escribe Q.
 int leerEntrada(bool& sigue, string mensaje) {
     string entrada;
@@ -82,9 +90,86 @@ int main() {
         }
         cout << endl;
 
+        // Ciclo principal del Golf: dibuja el tablero y pide una acción.
         if (opcion == "1") {
-			pass
-			
+            JuegoGolf juego;
+            juego.iniciarPartida();
+
+            while (!juego.estaPartidaTerminada()) {
+
+                actualizarPantallaGolf(juego, true);
+
+                cout << "Qué quieres hacer?" << endl << "[1].Mover" << endl << "[2].Repartir" << endl
+                    << "[3].Deshacer" << endl << "[4].Rehacer" << endl << "[5].Abandonar" << endl;
+                string accion;
+                cout << "Seleccione una opción entre 1, 2, 3, 4 y 5: ";
+                getline(cin, accion);
+
+                while (accion != "1" && accion != "2" && accion != "3" && accion != "4" && accion != "5") {
+                    cout << "Opción inválida. Intente nuevamente." << endl;
+                    cout << "Seleccione una opción entre 1, 2, 3, 4 y 5: ";
+                    getline(cin, accion);
+                }
+
+                if (accion == "1") {
+
+                    bool movimientoRealizado = false;
+                    bool seguir = true;
+
+                    // Pide la columna de origen hasta que el movimiento se realice o el jugador salga con Q.
+                    while (!movimientoRealizado && seguir) {
+
+                        int origen = leerEntrada(seguir, "Ingrese la columna de origen (Q para volver): ");
+                        actualizarPantallaGolf(juego, true);
+
+                        if (seguir) {
+                            movimientoRealizado = juego.mover(origen);
+
+                            // Avisa el motivo cuando la regla del juego rechaza el movimiento.
+                            if (!movimientoRealizado) {
+                                actualizarPantallaGolf(juego, true);
+                                cout << juego.getUltimoError() << endl;
+                            }
+                        }
+                    }
+                }
+
+                // Reparte una carta nueva en cada columna.
+                else if (accion == "2") {
+                    if (!juego.repartir()) {
+                        actualizarPantallaGolf(juego, true);
+                        cout << juego.getUltimoError() << endl;
+                    }
+                }
+
+                // Devuelve el estado anterior a la última jugada.
+                else if (accion == "3") {
+                    if (!juego.deshacer()) {
+                        actualizarPantallaGolf(juego, true);
+                        cout << juego.getUltimoError() << endl;
+                    }
+                }
+
+                // Vuelve a aplicar la última jugada deshecha.
+                else if (accion == "4") {
+                    if (!juego.rehacer()) {
+                        actualizarPantallaGolf(juego, true);
+                        cout << juego.getUltimoError() << endl;
+                    }
+                }
+
+                // Termina la partida actual y vuelve al menú principal.
+                else if (accion == "5") {
+                    juego.abandonar();
+                }
+            }
+
+            actualizarPantallaGolf(juego, false);
+
+            if (juego.juegoGanado())
+                cout << "¡Felicidades! Ganaste la partida de Golf." << endl;
+            else
+                cout << "Partida abandonada." << endl;
         }
 
         else if (opcion == "2") {
@@ -192,6 +277,11 @@ int main() {
             }
 
             actualizarPantalla(juego, false);
+
+            if (juego.juegoGanado())
+                cout << "¡Felicidades! Ganaste la partida de Spider." << endl;
+            else
+                cout << "Partida abandonada." << endl;
         }
         continuar = repetir();
     }

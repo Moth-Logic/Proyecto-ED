@@ -32,7 +32,19 @@
     <ClInclude Include="Headers\Lista.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Mazo.h">
+    <ClInclude Include="Headers\EstadoGolf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\JuegoGolf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\MazoGolf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\MazoSpider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\PilaCartaGolf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Node.h">

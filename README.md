@@ -54,7 +54,8 @@ msbuild "Ruby Solitaire/Ruby Solitaire.slnx" /p:Configuration=Release /p:Platfor
 
 - [x] Solitario Spider completo: reparto, movimientos, repartos, deshacer y rehacer.
 - [x] Interfaz de consola con validación de entradas.
-- [ ] Segundo juego del menú (opción 1), actualmente en desarrollo.
+- [x] Solitario Golf completo: reparto, movimientos, repartos, deshacer y rehacer.
+- [x] Segundo juego del menú (opción 1) con tablero de texto básico.
 
 ## Integrantes
 

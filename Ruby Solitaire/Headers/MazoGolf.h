@@ -3,37 +3,40 @@
 
 #include <cstdlib>
 #include <ctime>
-#include "Pila.h"
+#include <string>
 #include "Carta.h"
+#include "Lista.h"
+#include "Pila.h"
 
-// Mazo de 52 cartas los cautro palos (sin copias) 4 repartos de 13 cartas.
+// Mazo con las 52 cartas de los cuatro palos, sin copias. Se reparten 7 columnas
+// de 5 cartas y las 17 sobrantes quedan en el mazo para los repartos posteriores.
 class MazoGolf {
 private:
 	Pila<Carta> cartas;
-	int reparticionesRestantes;
 
 	// Llena el mazo con las 52 cartas antes de barajarlo.
 	void llenar() {
-	const string palos = "EDTC";
-	for (char paloActual : palos) {
-		for (int valor = 1; valor <= 13; valor++)
-			cartas.push(Carta(valor, paloActual));
+		const std::string palos = "EDTC";
+		for (char paloActual : palos)
+			for (int valor = 1; valor <= 13; valor++)
+				cartas.push(Carta(valor, paloActual));
 	}
-}
 
 public:
+	// Cartas que se necesitan para dar un reparto completo en las 7 columnas.
+	static const int CARTAS_POR_REPARTO = 7;
+
 	// Prepara el generador aleatorio y deja un mazo barajado listo para jugar.
-	MazoGolf() : reparticionesRestantes(4) {
+	MazoGolf() {
 		std::srand((unsigned)std::time(nullptr));
 		reiniciar();
 	}
 
-	// Vuelve a llenar el mazo, lo baraja y restaura los 4 repartos.
+	// Vuelve a llenar el mazo y lo baraja.
 	void reiniciar() {
 		cartas.clear();
 		llenar();
 		barajar();
-		reparticionesRestantes = 4;
 	}
 
 	// Baraja las 52 cartas con el algoritmo Fisher-Yates sobre un arreglo temporal.
@@ -56,17 +59,35 @@ public:
 	Carta sacarCarta() { return cartas.pop(); }
 	// Devuelve la cantidad de cartas que quedan en el mazo.
 	int tamano() { return cartas.getSize(); }
-	// Devuelve cuántos repartos le quedan al mazo.
-	int cantidadReparticiones() { return reparticionesRestantes; }
-	// Descuenta un reparto del contador del mazo.
-	void decrementarReparticiones() { reparticionesRestantes--; }
+	// Devuelve cuántos repartos completos se pueden dar todavía con las cartas que quedan.
+	int cantidadReparticiones() { return cartas.getSize() / CARTAS_POR_REPARTO; }
 
 	// Vacía el mazo para reconstruirlo desde un estado guardado.
 	void vaciar() { cartas.clear(); }
 	// Apila una carta en el tope del mazo al reconstruirlo.
 	void agregarCarta(const Carta& carta) { cartas.push(carta); }
-	// Fija los repartos restantes al reconstruir un estado guardado.
-	void establecerReparticiones(int cantidad) { reparticionesRestantes = cantidad; }
+
+	// Devuelve una copia de las cartas en orden fondo->tope, así la última posición
+	// es la próxima carta a repartir. El llamador debe liberar la lista.
+	Lista<Carta>* copiarCartas() {
+		Lista<Carta>* copia = new Lista<Carta>();
+		Pila<Carta> aux;
+		while (!cartas.isEmpty())
+			aux.push(cartas.pop());
+		while (!aux.isEmpty()) {
+			Carta carta = aux.pop();
+			cartas.push(carta);
+			copia->append(carta);
+		}
+		return copia;
+	}
+
+	// Reconstruye el mazo desde una copia hecha con copiarCartas().
+	void restaurarCartas(Lista<Carta>* copia) {
+		cartas.clear();
+		for (int i = 0; i < copia->getSize(); i++)
+			cartas.push(copia->at(i));
+	}
 };
 
 #endif
