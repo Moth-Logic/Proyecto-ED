@@ -61,3 +61,13 @@ x86/
 *~
 Thumbs.db
 Desktop.ini
+
+# --- Herramientas del entorno de desarrollo ---
+.freebuff/
+
+# --- Artefactos de distribución (releases) ---
+# El paquete portable se publica en GitHub Releases y no se versiona en el repositorio.
+dist/
+*.zip
+*.7z
+*.rar
