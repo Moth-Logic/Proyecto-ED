@@ -26,8 +26,8 @@ private:
 	static const int CARTAS_POR_COLUMNA = 5;
 
 	PilaCartaGolf columnas[CANTIDAD_COLUMNAS];
+	PilaCartaGolf descarte;
 	MazoGolf mazoGolf;
-	Pila<Carta> descarte;
 	Pila<EstadoGolf*> historialDeshacer;
 	Pila<EstadoGolf*> historialRehacer;
 	int puntuacion;
@@ -45,7 +45,7 @@ private:
 		}
 		estado->descarte = new Lista<Carta>();
 		Pila<Carta> aux;
-		while (!descarte.isEmpty())
+		while (!descarte.vacia())
 			aux.push(descarte.pop());
 		while (!aux.isEmpty()) {
 			Carta carta = aux.pop();
@@ -65,7 +65,7 @@ private:
 			for (int k = 0; k < estado->columnas[i]->getSize(); k++)
 				columnas[i].push(estado->columnas[i]->at(k));
 		}
-		descarte.clear();
+		descarte.limpiar();
 		for (int k = 0; k < estado->descarte->getSize(); k++)
 			descarte.push(estado->descarte->at(k));
 		mazoGolf.restaurarCartas(estado->mazo);
@@ -102,13 +102,13 @@ private:
 			ultimoError = "La columna de origen está vacía.";
 			return false;
 		}
-		if (descarte.isEmpty()) {
+		if (descarte.vacia()) {
 			ultimoError = "El descarte está vacío.";
 			return false;
 		}
 
 		int valorOrigen = columna.tope().getValor();
-		int valorDescarte = descarte.top().getValor();
+		int valorDescarte = descarte.tope().getValor();
 
 		bool esContiguo = std::abs(valorOrigen - valorDescarte) == 1;
 		bool esCicloKA = (valorOrigen == 1 && valorDescarte == 13) || (valorOrigen == 13 && valorDescarte == 1);
@@ -134,16 +134,16 @@ public:
 		rondas = 1;
 		partidaTerminada = false;
 		ultimoError = "";
-		descarte.clear();
+		descarte.limpiar();
 		for (int i = 0; i < CANTIDAD_COLUMNAS; i++)
 			columnas[i].limpiar();
-		for (int k = 0; k < CARTAS_POR_COLUMNA; k++)
-			for (int i = 0; i < CANTIDAD_COLUMNAS; i++) {
-				columnas[i].push(mazoGolf.sacarCarta());
-				columnas[i].voltearTope();
+		for (int col = 0; col < CANTIDAD_COLUMNAS; col++)
+			for (int i = 0; i < CARTAS_POR_COLUMNA; i++) {
+				columnas[col].push(mazoGolf.sacarCarta());
+				columnas[col].voltearTope();
 			}
 		// El tope de la primera columna es la primera carta del descarte.
-		descarte.push(columnas[0].pop());
+		descarte.push(mazoGolf.sacarCarta());
 	}
 
 	// Pasa el tope de la columna indicada al descarte si la jugada es válida.
@@ -225,19 +225,82 @@ public:
 
 	// Arma el texto del tablero con el conteo del mazo y una línea por columna.
 	string mostrarEstado() {
+		const int anchoColumna = 9;
+		const string separacion = "    ";
 		string texto = "Mazo: " + to_string(mazoGolf.tamano()) + " cartas, repartos: "
-			+ to_string(mazoGolf.cantidadReparticiones()) + ", ronda: " + to_string(rondas)
-			+ ", puntos: " + to_string(puntuacion) + "\n";
-		texto += "Descarte: " + (descarte.isEmpty() ? string("-") : descarte.top().toString()) + "\n\n";
-		for (int i = 0; i < CANTIDAD_COLUMNAS; i++)
-			texto += to_string(i + 1) + ". " + columnas[i].mostrar() + "\n";
+			+ to_string(mazoGolf.cantidadReparticiones()) + ", ronda: "
+			+ to_string(rondas) + ", puntos: " + to_string(puntuacion) + "\n\n";
+		texto += "Descarte\n";
+		texto += "┌───────┐  \n";
+		texto += "│";
+		texto += "\033[91m░▒░▒░▒░";
+		texto += "\033[0m│\n" + (descarte.vacia() ? string("-") : descarte.dibujarCarta(descarte.tope(), true)) + "\n";
+		for (int i = 1; i <= 7; i++) {
+			string encabezado = to_string(i);
+			while (encabezado.size() < anchoColumna)
+				encabezado += " ";
+			texto += encabezado + separacion;
+		}
+		string filas[CANTIDAD_COLUMNAS];
+		int altura = 0;
+
+		for (int i = 0; i < CANTIDAD_COLUMNAS; i++) {
+			filas[i] = columnas[i].mostrar();
+
+			int lineas = filas[i].empty() ? 0 : 1;
+
+			for (char c : filas[i]) {
+				if (c == '\n') {
+					lineas++;
+				}
+			}
+
+			if (lineas > altura) {
+				altura = lineas;
+			}
+		}
+
+		for (int l = 0; l < altura; l++) {
+			texto += "\n";
+
+			for (int i = 0; i < CANTIDAD_COLUMNAS; i++) {
+				string linea = extraerLinea(filas[i], l);
+
+				while (linea.size() < anchoColumna)
+					linea += " ";
+
+				texto += linea + separacion;
+			}
+		}
+
 		return texto;
+	}
+
+	static string extraerLinea(const string& texto, int linea) {
+		size_t pos = 0;
+		for (int i = 0; i < linea; i++) {
+			pos = texto.find('\n', pos);
+			if (pos == string::npos)
+				return "";
+			pos++;
+		}
+		size_t fin = texto.find('\n', pos);
+		return texto.substr(pos, fin == string::npos ? string::npos : fin - pos);
+	}
+
+	// Revisa que la columna de origen esté entre 1 y 7.
+	bool origenValido(int origen) {
+		if (origen < 1 || origen > 7) {
+			ultimoError = "Columna de origen inválida.";
+			return false;
+		}
+		return true;
 	}
 
 	// Devuelve la columna indicada con índices de 0 a 6.
 	PilaCartaGolf& getColumna(int indice) { return columnas[indice]; }
 	// Devuelve la carta del tope del descarte o una carta vacía si no hay ninguna.
-	Carta getDescarteTope() { return descarte.isEmpty() ? Carta() : descarte.top(); }
+	Carta getDescarteTope() { return descarte.vacia() ? Carta() : descarte.tope(); }
 	// Devuelve cuántas cartas se pasaron al descarte.
 	int getPuntuacion() { return puntuacion; }
 	// Devuelve cuántos repartos se dieron hasta el momento.
@@ -247,9 +310,11 @@ public:
 	// Devuelve los repartos completos que todavía se pueden dar.
 	int getReparticionesRestantes() { return mazoGolf.cantidadReparticiones(); }
 	// Devuelve la cantidad de cartas del descarte.
-	int getCartasDescarte() { return descarte.getSize(); }
+	int getCartasDescarte() { return descarte.tamano(); }
 	// Devuelve el último mensaje de error generado por una validación.
 	string getUltimoError() { return ultimoError; }
+	//Borra el último mensaje de error generado por una validación.
+	void borrarUltimoError() { ultimoError = ""; }
 };
 
 #endif
