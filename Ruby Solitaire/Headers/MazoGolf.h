@@ -8,6 +8,10 @@
 #include "Lista.h"
 #include "Pila.h"
 
+using std::string;
+using std::srand;
+using std::time;
+
 // Mazo con las 52 cartas de los cuatro palos, sin copias. Se reparten 7 columnas
 // de 5 cartas y las 17 sobrantes quedan en el mazo para los repartos posteriores.
 class MazoGolf {
@@ -16,7 +20,7 @@ private:
 
 	// Llena el mazo con las 52 cartas antes de barajarlo.
 	void llenar() {
-		const std::string palos = "EDTC";
+		const string palos = "EDTC";
 		for (char paloActual : palos)
 			for (int valor = 1; valor <= 13; valor++)
 				cartas.push(Carta(valor, paloActual));
@@ -28,7 +32,7 @@ public:
 
 	// Prepara el generador aleatorio y deja un mazo barajado listo para jugar.
 	MazoGolf() {
-		std::srand((unsigned)std::time(nullptr));
+		srand((unsigned)time(nullptr));
 		reiniciar();
 	}
 
@@ -46,7 +50,7 @@ public:
 		for (int i = 0; i < n; i++)
 			arr[i] = cartas.pop();
 		for (int i = n - 1; i > 0; i--) {
-			int j = std::rand() % (i + 1);
+			int j = rand() % (i + 1);
 			Carta temp = arr[i];
 			arr[i] = arr[j];
 			arr[j] = temp;
