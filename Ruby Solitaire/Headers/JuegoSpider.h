@@ -176,8 +176,14 @@ public:
 
 	// Devuelve la jugada anterior y la deja disponible para rehacer.
 	bool deshacer() {
-		if (partidaTerminada || historialDeshacer.isEmpty())
+		if (partidaTerminada) {
+			ultimoError = "La partida está terminada.";
 			return false;
+		}
+		if (historialDeshacer.isEmpty()) {
+			ultimoError = "No hay movimientos para deshacer.";
+			return false;
+		}
 		historialRehacer.push(crearSnapshot());
 		aplicarEstado(historialDeshacer.pop());
 		return true;
@@ -185,8 +191,14 @@ public:
 
 	// Reaplica la última jugada que se había deshecho.
 	bool rehacer() {
-		if (partidaTerminada || historialRehacer.isEmpty())
+		if (partidaTerminada) {
+			ultimoError = "La partida está terminada.";
 			return false;
+		}
+		if (historialRehacer.isEmpty()) {
+			ultimoError = "No hay movimientos para rehacer.";
+			return false;
+		}
 		historialDeshacer.push(crearSnapshot());
 		aplicarEstado(historialRehacer.pop());
 		return true;
@@ -297,6 +309,8 @@ public:
 	PilaCartaSpider& getColumna(int indice) { return columnas[indice]; }
 	// Devuelve el último mensaje de error generado por una validación.
 	string getUltimoError() { return ultimoError; }
+	//Borra el último mensaje de error generado por una validación.
+	void borrarUltimoError() { ultimoError = ""; }
 
 	// Devuelve la línea 'linea' (0-based) de un texto separado por saltos de línea.
 	static string extraerLinea(const string& texto, int linea) {
