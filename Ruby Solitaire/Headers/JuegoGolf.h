@@ -159,7 +159,7 @@ public:
 		return true;
 	}
 
-	// Reparte una carta boca arriba en cada columna mientras queden cartas suficientes.
+	// Reparte una carta boca arriba en la pila de descarte.
 	bool repartir() {
 		if (partidaTerminada) {
 			ultimoError = "La partida está terminada.";
@@ -171,10 +171,8 @@ public:
 		}
 		historialDeshacer.push(crearSnapshot());
 		limpiarRehacer();
-		for (int i = 0; i < CANTIDAD_COLUMNAS; i++) {
-			columnas[i].push(mazoGolf.sacarCarta());
-			columnas[i].voltearTope();
-		}
+		descarte.push(mazoGolf.sacarCarta());
+		descarte.voltearTope();
 		rondas++;
 		return true;
 	}
