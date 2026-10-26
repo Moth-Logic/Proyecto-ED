@@ -5,11 +5,11 @@
 <h1 align="center">Ruby Solitaire</h1>
 
 <p align="center">
-  <b>Versión 1.0.0</b>
+  <b>Versión 1.1.0</b>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/versi%C3%B3n-1.0.0-c41e3a" alt="Versión 1.0.0">
+  <img src="https://img.shields.io/badge/versi%C3%B3n-1.1.0-c41e3a" alt="Versión 1.1.0">
   <img src="https://img.shields.io/badge/plataforma-Windows%2010%2F11-0078D6?logo=windows&logoColor=white" alt="Windows">
   <img src="https://img.shields.io/badge/interfaz-consola-2E3440" alt="Consola">
 </p>
@@ -33,13 +33,13 @@ No necesitas instalar nada: se descarga, se descomprime y se juega.
 
 ## Descarga
 
-Descarga el archivo **`Ruby-Solitaire-v1.0.0-win64.zip`** desde la sección
+Descarga el archivo **`Ruby-Solitaire-v1.1.0-win64.zip`** desde la sección
 [**Releases**](https://github.com/Moth-Logic/Ruby-Solitaire/releases) del repositorio.
 
 Dentro del archivo comprimido encontrarás:
 
 ```
-Ruby-Solitaire-v1.0.0-win64/
+Ruby-Solitaire-v1.1.0-win64/
 ├── Ruby Solitaire.exe
 ├── msvcp140.dll
 ├── vcruntime140.dll
@@ -50,9 +50,9 @@ Ruby-Solitaire-v1.0.0-win64/
 
 ## Cómo ejecutar
 
-1. Descarga `Ruby-Solitaire-v1.0.0-win64.zip`.
+1. Descarga `Ruby-Solitaire-v1.1.0-win64.zip`.
 2. Haz clic derecho sobre el archivo y elige **Extraer todo…**.
-3. Abre la carpeta `Ruby-Solitaire-v1.0.0-win64`.
+3. Abre la carpeta `Ruby-Solitaire-v1.1.0-win64`.
 4. Haz doble clic en **`Ruby Solitaire.exe`**.
 5. Elige el juego que quieres jugar: `1` para Golf Solitaire o `2` para Spider Solitaire.
 
