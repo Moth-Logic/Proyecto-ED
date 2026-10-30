@@ -64,7 +64,7 @@ public:
 	// Devuelve la cantidad de cartas que quedan en el mazo.
 	int tamano() { return cartas.getSize(); }
 	// Devuelve cuántos repartos completos se pueden dar todavía con las cartas que quedan.
-	int cantidadReparticiones() { return cartas.getSize() / CARTAS_POR_REPARTO; }
+	int cantidadReparticiones() { return cartas.getSize(); }
 
 	// Vacía el mazo para reconstruirlo desde un estado guardado.
 	void vaciar() { cartas.clear(); }
